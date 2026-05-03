@@ -293,24 +293,23 @@ public final class NativePatcher {
     }
 
     private static boolean hasLegacyLwjglNatives(Version version) {
+        boolean hasx86 = false;
+        boolean hasArm64 = false;
         for (Library lib : version.getLibraries()) {
             if (!lib.appliesToCurrentEnvironment()) continue;
             if (!"org.lwjgl".equals(lib.getGroupId())) continue;
-            if (!lib.isNative()) continue;
 
             String classifier = lib.getClassifier();
-            if (classifier == null) {
-                return true;
-            }
+            if (classifier == null || !classifier.startsWith("natives")) continue;
 
             String c = classifier.toLowerCase(Locale.ROOT);
-            boolean arm64Like = c.contains("arm64") || c.contains("aarch64");
-            if (!arm64Like) {
-                // e.g. natives-macos / natives-windows
-                return true;
+            if (c.contains("arm64") || c.contains("aarch64")) {
+                hasArm64 = true;
+            } else {
+                hasx86 = true;
             }
         }
-        return false;
+        return hasx86 && !hasArm64;
     }
 
     public enum SupportStatus {
