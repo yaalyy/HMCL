@@ -138,7 +138,7 @@ public final class NativePatcher {
                 String matchedKey = nativeKey;
                 Library replacement = replacements.getOrDefault(nativeKey, NONEXISTENT_LIBRARY);
                 if (replacement == NONEXISTENT_LIBRARY) {
-                    String classifier = library.classifier();å
+                    String classifier = library.classifier();
                     if (classifier != null) {
                         String classifierKey = library.name() + ":" + classifier;
                         replacement = replacements.getOrDefault(classifierKey, NONEXISTENT_LIBRARY);
